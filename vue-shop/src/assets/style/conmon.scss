@@ -1,0 +1,39 @@
+// 默认的大小
+$fontSizeBase: 37.5px !default;
+
+// 默认的颜色
+$blue: blue;
+$red: red;
+$white: #fff;
+$green: #00e537;
+
+// 宽度高度
+@mixin wh($w: 100%, $h: 100%) {
+	width: $w;
+	height: $h;
+}
+
+// px转rem
+@function pxTorem($px) {
+	@return $px / $fontSizeBase * 1rem;
+}
+
+// button默认样式
+@mixin button() {
+	
+}
+
+// 文本溢出显示省略号
+@mixin ellipse($num: 1) {
+  -webkit-line-clamp: $num;
+  -webkit-box-orient: vertical;
+	overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// 单行文本省略
+@mixin ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
