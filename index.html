@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		const data = {
+			var1: 'a',
+			var2: 'b',
+			var3: [{
+				'c1': 'de1'
+			}, {
+				'c2': 'de2'
+			}, {
+				'c3': 'de3'
+			}]
+		}
+		let str = '{{var1}} of {{var2}} are: {{#each}}{{var3}}999{{/each}}';
+
+		// js的模板
+		function jsTem (data, payLoad) {
+			return eval(`${JSON.stringify(data)}.map(item => {
+				return Object.keys(item)[0] + item[Object.keys(item)[0]] + ${payLoad}
+			})`).join('')
+		}
+		// 字符串的输出
+		function StrFun (data, str) {
+			let strReg = str.match(/{{\w+}}/g)
+			strReg.forEach(item => {
+				let key = item.includes('{{') ? item.slice(2, -2) : item
+				str = str.replace(item, data[key])
+			})
+		  return str
+		}
+		// 模板编译输出
+		function TemEach (data, EachStr) {
+			let EachReg = EachStr.join().match(/{{\w+}}/g)
+			let num = EachStr.join().match(/\w+/g)
+			let key = EachReg[0].includes('{{') ? EachReg[0].slice(2, -2) : EachReg
+			return jsTem(data[key], num[num.indexOf(key) + 1])
+		}
+		function template(data, str) {
+			let funstr = ''
+			let funEach = ''
+			let funEachReg = str.match(/{{#each}}.*{{\/each}}/g)
+			let funstrReg = str.split(funEachReg)
+			let newStr = StrFun(data, funstrReg[0]) + TemEach(data, funEachReg)
+		  return newStr
+		}
+		const result = template(data, str)
+		console.log(result)
+	</script>
+</body>
+</html>
